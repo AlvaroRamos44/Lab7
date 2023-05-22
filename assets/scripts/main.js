@@ -68,21 +68,46 @@ async function getRecipes() {
   // EXPOSE - START (All expose numbers start with A)
   // A1. TODO - Check local storage to see if there are any recipes.
   //            If there are recipes, return them.
+  const recipes = localStorage.getItem('recipes');       // A1
+  if(recipes !== null){
+    let recipesParsed = JSON.parse(recipes);
+    return recipesParsed;    
+  }
   /**************************/
   // The rest of this method will be concerned with requesting the recipes
   // from the network
   // A2. TODO - Create an empty array to hold the recipes that you will fetch
+  let recipesArr = [];                                   // A2
   // A3. TODO - Return a new Promise. If you are unfamiliar with promises, MDN
   //            has a great article on them. A promise takes one parameter - A
   //            function (we call these callback functions). That function will
   //            take two parameters - resolve, and reject. These are functions
   //            you can call to either resolve the Promise or Reject it.
+  return new Promise(async function(resolve,reject){    // A3
+    for(let i = 0; i < RECIPE_URLS.length; i++){        // A4
+      try {                                             // A5
+        let response = await fetch(RECIPE_URLS[i]);     // A6
+        let json = await response.json();               // A7
+        recipesArr.push(json);                          // A8
+        if(recipesArr.length == RECIPE_URLS.length){    // A9
+          saveRecipesToStorage(recipesArr);
+          resolve(recipesArr);
+        }
+      } catch(err) {                                      
+        console.error(err);                             // A10
+        reject(err);                                    // A11
+      }
+
+    }
+
+  });
   /**************************/
   // A4-A11 will all be *inside* the callback function we passed to the Promise
   // we're returning
   /**************************/
   // A4. TODO - Loop through each recipe in the RECIPE_URLS array constant
   //            declared above
+
   // A5. TODO - Since we are going to be dealing with asynchronous code, create
   //            a try / catch block. A6-A9 will be in the try portion, A10-A11
   //            will be in the catch portion.
