@@ -1,3 +1,4 @@
 # Lab 7 - Starter
 
-[Expose](https://alvaroramos44.github.io/Lab7/)
+[expose.html](https://alvaroramos44.github.io/Lab7/expose.html)
+
